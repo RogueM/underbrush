@@ -1,11 +1,11 @@
-//initial variables
+// initial variables
 
 var doom = 10
 var hardwin = 0;
 var interval = 0;
 
 var caption = false;
-var doomtimer = true;
+var doomtimer = false;
 var baileyplay = false;
 
 var unbr = {};
@@ -70,7 +70,7 @@ unbrtut.init = function(){
 }
 
 
-//shuffles the deck
+// shuffles the deck
 
 function shuffle(array) {
     var m = array.length,
@@ -85,7 +85,7 @@ function shuffle(array) {
 }
 
 
-//this function allows for a new hand to be drawn, ensuring all gods and ghosts are shuffled back into the deck if drawn into this hand
+// this function allows for a new hand to be drawn, ensuring all gods and ghosts are shuffled back into the deck if drawn into this hand
 
 function drawhandstart() {
     if (unbr.drawdeck.length > (5 + (8 - unbr.score) + (10 - unbr.ghostcount))){
@@ -117,7 +117,7 @@ function drawhandstart() {
 }
 
 
-//this function shuffles the limbo deck back into the draw deck
+// this function shuffles the limbo deck back into the draw deck
 
 function limboshuffle() {
     if (unbr.limbo.length > 0) {
@@ -130,7 +130,7 @@ function limboshuffle() {
 }
 
 
-//this function needs to run through both the remainder of the deck, and check to see if it's just gods, and then it needs to see if the player has any spirits in hand of the same colour
+// this function needs to run through both the remainder of the deck, and check to see if it's just gods, and then it needs to see if the player has any spirits in hand of the same colour
 
 function endgamecheck() {
     var godcount = 0;
@@ -180,7 +180,7 @@ function endgamecheck() {
 }
 
 
-//notifies the user of stuff, opens modal box
+// notifies the user of stuff, opens modal box
 
 function notificationcloseclick(){
     $.fancybox({
@@ -198,7 +198,7 @@ function notificationcloseclick(){
 }
 
 
-//this function implements the game progress status
+// this function implements the game progress status
 
 function lampfade(){
     $("#lamp1").fadeTo("slow", unbr.lamppercent);
@@ -211,7 +211,7 @@ function doomreset(){
 }
 
 
-//this function allows the player to draw a new card unless the draw deck is empty
+// this function allows the player to draw a new card unless the draw deck is empty
 
 function drawcard() {
     cardcount(); 
@@ -249,7 +249,7 @@ function drawcard() {
 }
 
 
-//this function defines the win conditions and acknoledges completion
+// this function defines the win conditions and acknoledges completion
 
 function win() {
     unbr.lamppercent = 1;
@@ -286,7 +286,7 @@ function win() {
 }
 
 
-//this function defines the losing conditions and terminate the game
+// this function defines the losing conditions and terminate the game
 
 function loss() {
         unbr.lamppercent = 0;
@@ -317,7 +317,7 @@ function loss() {
 }
 
 
-//function checks for ghost card draws
+// function checks for ghost card draws
 
 function ghostcheck() { 
     for (g = 0, k = unbr.hand.length-1; g <= k; g++){
@@ -331,7 +331,7 @@ function ghostcheck() {
 }
 
 
-//function checks for spirit card in hand
+// function checks for spirit card in hand
 
 function spiritcheck() { 
     spirithere = 0;
@@ -343,8 +343,9 @@ function spiritcheck() {
 }
 
 
-//if a god card is drawn, this function checks for any spirits in hand and if the right colour is present
-//offers to let the player trade in that spirit for an immmediate point
+// if a god card is drawn, this function checks for any spirits
+// in hand and if the right colour is present offers to let
+// the player trade in that spirit for an immmediate point
 
 function godcheck() {
     for (g = 0, k = unbr.hand.length - 1; g <= k; g++){
@@ -373,7 +374,7 @@ function godcheck() {
 }
 
 
-//finds a god in the deck, removes it, adds score
+// finds a god in the deck, removes it, adds score
 
 function findremovegod() {
     for (var i = 0; i <= unbr.drawdeck.length -1; i++){
@@ -394,7 +395,7 @@ function findremovegod() {
 }
 
 
-//the function that allows a player to discard a card, and then draw anew
+// the function that allows a player to discard a card, and then draw anew
 
 function discardcard() {
     unbr.discard.unshift((unbr.hand[unbr.selected[0]]));
@@ -406,7 +407,7 @@ function discardcard() {
 }
 
 
-//discarding the players hand
+// discarding the players hand
 
 function discardhand() {
     cardcount();
@@ -418,33 +419,32 @@ function discardhand() {
 }
 
 
-//this is where we add new cards to the sequence the player is building from their hand
+// this is where we add new cards to the sequence the player is building from their hand
 
 function sequenceadd() {
-    	unbr.sequence.push(unbr.hand[unbr.selected[0]]);
-        if (caption === false){
-    	   $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'></div>");
-        }
-        if (caption === true){
-            $("#sequence p:last").remove();
-             if (unbr.sequence.length == 1){
-        $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'><p>" + unbr.hand[unbr.selected[0]][0] + "</p></div>");
-    }  else if (unbr.sequence.length == 2){
-        $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'><p>"  + unbr.sequence[0][0] + " - " + unbr.hand[unbr.selected[0]][0] + "</p></div>");
-    } else if (unbr.sequence.length == 3){
-        $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'><p>"  + unbr.sequence[0][0] + " - "  + unbr.sequence[1][0] + " - " + unbr.hand[unbr.selected[0]][0] + "</p></div>");
-    } else if (unbr.sequence.length >= 4){
-        $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'><p>"  + unbr.sequence[unbr.sequence.length-3][0] + " - "  + unbr.sequence[unbr.sequence.length-2][0] + " - " + unbr.hand[unbr.selected[0]][0] + "</p></div>");
+    unbr.sequence.push(unbr.hand[unbr.selected[0]]);
+    if (caption === false){
+        $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'></div>");
     }
+    if (caption === true){
+        $("#sequence p:last").remove();
+        if (unbr.sequence.length == 1){
+            $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'><p>" + unbr.hand[unbr.selected[0]][0] + "</p></div>");
+        } else if (unbr.sequence.length == 2){
+            $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'><p>"  + unbr.sequence[0][0] + " - " + unbr.hand[unbr.selected[0]][0] + "</p></div>");
+        } else if (unbr.sequence.length == 3){
+            $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'><p>"  + unbr.sequence[0][0] + " - "  + unbr.sequence[1][0] + " - " + unbr.hand[unbr.selected[0]][0] + "</p></div>");
+        } else if (unbr.sequence.length >= 4){
+            $("#sequence").append("<div class='cardsequence " + unbr.hand[unbr.selected[0]][0] + " " + unbr.hand[unbr.selected[0]][1] + "'><p>"  + unbr.sequence[unbr.sequence.length-3][0] + " - "  + unbr.sequence[unbr.sequence.length-2][0] + " - " + unbr.hand[unbr.selected[0]][0] + "</p></div>");
         }
-    	unbr.hand.splice(unbr.selected[0], 1);
-    	 $(".card").slice(unbr.normselect, unbr.normselect+1).remove();
-    	sequencecheck();
-    	drawcard();
-
-        if (unbr.playingtutorial === true){
-            tutorialimmediate();
-        }
+    }
+    unbr.hand.splice(unbr.selected[0], 1);
+    $(".card").slice(unbr.normselect, unbr.normselect+1).remove();
+    sequencecheck();
+    drawcard();
+    if (unbr.playingtutorial === true){
+        tutorialimmediate();
+    }
 }
 
 
@@ -452,19 +452,18 @@ function sequenceadd() {
 
 function sequencecheck() {
     unbr.colourgrab = unbr.sequence[unbr.sequence.length - 1][0];
-	if (unbr.sequence.length === 3 ){
-		if (unbr.sequence[unbr.sequence.length -1][0] === unbr.sequence[unbr.sequence.length -2][0] && unbr.sequence[unbr.sequence.length - 1][0] === unbr.sequence[unbr.sequence.length - 3][0]) {
+    if (unbr.sequence.length === 3 ){
+        if (unbr.sequence[unbr.sequence.length -1][0] === unbr.sequence[unbr.sequence.length -2][0] && unbr.sequence[unbr.sequence.length - 1][0] === unbr.sequence[unbr.sequence.length - 3][0]) {
             findremovegod();
-		}
-	}
+        }
+    }
     if (unbr.sequence.length === 6 ){
         if (unbr.sequence[unbr.sequence.length -1][0] === unbr.sequence[unbr.sequence.length -2][0] && unbr.sequence[unbr.sequence.length - 1][0] === unbr.sequence[unbr.sequence.length - 3][0] && unbr.sequence[unbr.sequence.length - 1][0] === unbr.sequence[unbr.sequence.length - 4][0] && unbr.sequence[unbr.sequence.length - 1][0] === unbr.sequence[unbr.sequence.length - 5][0] && unbr.sequence[unbr.sequence.length - 1][0] === unbr.sequence[unbr.sequence.length - 6][0]) {
             findremovegod();
         } else if (unbr.sequence[unbr.sequence.length -1][0] === unbr.sequence[unbr.sequence.length -2][0] && unbr.sequence[unbr.sequence.length - 1][0] === unbr.sequence[unbr.sequence.length - 3][0] && unbr.sequence[unbr.sequence.length - 1][0] !== unbr.sequence[unbr.sequence.length - 4][0]) {
             findremovegod();
         }
-    } 
-    else if (unbr.sequence.length >= 4 ){
+    } else if (unbr.sequence.length >= 4 ){
         if (unbr.sequence[unbr.sequence.length -1][0] === unbr.sequence[unbr.sequence.length -2][0] && unbr.sequence[unbr.sequence.length - 1][0] === unbr.sequence[unbr.sequence.length - 3][0] && unbr.sequence[unbr.sequence.length - 1][0] !== unbr.sequence[unbr.sequence.length - 4][0]) {
             findremovegod();
         }
@@ -552,7 +551,7 @@ $(document).on('dblclick', '.card', function() {
 });
 
 
-// gets the selection from click event, which can then be used to identify
+// gets selection from click event which can then be used to identify
 // the card selected for purposes of cross examining it with hand
 // also resolves special cases with gods and ghosts in selection
 
@@ -614,7 +613,7 @@ $(document).on('click', '.card', function() {
 });
 
 
-//moves cards from hand to discard
+// moves cards from hand to discard
 
 function cardshift(){
     unbr.hand.shift();
@@ -624,7 +623,7 @@ function cardshift(){
 }
 
 
-//drops next 5 unseen cards, shuffles gods or ghosts back into the deck
+// drops next 5 unseen cards, shuffles gods or ghosts back into the deck
 
 function dropunseen(){
     var legitCounter = 0;
@@ -641,7 +640,7 @@ function dropunseen(){
         unbr.drawdeck.shift();
         console.log("dropping: " + unbr.discard[0]);
         legitCounter++;
-    }
+        }
     }
     $("#preview").empty();
     $("#preview").append("<div id ='cardpreviewinstruction'>Here are the cards you dropped</div><br>");
@@ -655,55 +654,53 @@ function dropunseen(){
         }
     }
     if (illegalCounter > 0){
-    console.log("limbo: " + unbr.limbo);
-    $("#preview").append("<div id='carddropinstruction'>Here are the cards you could not drop</div><br>");
+        console.log("limbo: " + unbr.limbo);
+        $("#preview").append("<div id='carddropinstruction'>Here are the cards you could not drop</div><br>");
         $("#preview").append("<div class='cardPreviewHandler' id='cardPreviewHandler2'></div>")
-      for (i = 0; i < (unbr.limbo.length); i++){
-         if (caption === false){
+        for (i = 0; i < (unbr.limbo.length); i++){
+        if (caption === false){
             $("#cardPreviewHandler2").append("<div class ='cardprev " + unbr.limbo[i][0] + " " + unbr.limbo[i][1] +"'></div>");
-            }
-            if (caption === true){
-                $("#cardPreviewHandler2").append("<div class ='cardprev " + unbr.limbo[i][0] + " " + unbr.limbo[i][1] +"'><p>" + unbr.limbo[i][0] + "</p></div>");
+        }
+        if (caption === true){
+            $("#cardPreviewHandler2").append("<div class ='cardprev " + unbr.limbo[i][0] + " " + unbr.limbo[i][1] +"'><p>" + unbr.limbo[i][0] + "</p></div>");
             }
         }
     }
-        if (caption === false){
+    if (caption === true){
+        if (illegalCounter > 0){
+            $.fancybox({
+            'autoSize' : false,
+            'transitionIn': 'elastic',
+            'transitionOut': 'elastic',
+            'speedIn': 500,
+            'speedOut': 300,
+            'width' : 680,
+            'height' : 560,
+            'topRatio' : 0.85,
+            'href' : '#preview',
+            'closeBtn' : false,
+            'modal' : false,
+            'closeClick' : true
+            });
+        } else {
+            $.fancybox({
+            'autoSize' : false,
+            'transitionIn': 'elastic',
+            'transitionOut': 'elastic',
+            'speedIn': 500,
+            'speedOut': 300,
+            'width' : 680,
+            'height' : 260,
+            'topRatio' : 0.85,
+            'href' : '#preview',
+            'closeBtn' : false,
+            'modal' : false,
+            'closeClick' : true
+            });
+        }
+    } else {
         notificationcloseclick();
     }
-        if (caption === true){
-            if (illegalCounter > 0){
-    $.fancybox({
-    'autoSize' : false,
-    'transitionIn': 'elastic',
-    'transitionOut': 'elastic',
-    'speedIn': 500,
-    'speedOut': 300,
-    'width' : 680,
-    'height' : 560,
-    'topRatio' : 0.85,
-    'href' : '#preview',
-    'closeBtn' : false,
-    'modal' : false,
-    'closeClick' : true
-    });
-    } else {
-    $.fancybox({
-    'autoSize' : false,
-    'transitionIn': 'elastic',
-    'transitionOut': 'elastic',
-    'speedIn': 500,
-    'speedOut': 300,
-    'width' : 680,
-    'height' : 260,
-    'topRatio' : 0.85,
-    'href' : '#preview',
-    'closeBtn' : false,
-    'modal' : false,
-    'closeClick' : true
-    });
-
-    }
-        }
     $("#infocard").empty();
     cardcount();
     unbr.discard.unshift(unbr.hand[0]);
@@ -739,12 +736,13 @@ function godindicator(){
     }
 }
 
+
 $(document).ready(function() {
     $(".fancybox").fancybox();
 });    
 
 
-//creates the spirit power view
+// creates the spirit power view
 
 function spiritpower(){
     unbr.hand.splice(unbr.selected, 1);
@@ -754,76 +752,76 @@ function spiritpower(){
 }
 
 
-//does the visual parts of the spirit power
+// does the visual parts of the spirit power
 
 function spiritview(){
     $("#preview").empty();
     $("#preview").append("<div id ='cardpreviewinstruction'>Here are the next 5 cards in the deck. You must choose 1 to discard. You may not discard Gods.</div>");
     if (unbr.drawdeck.length <= 5){
         for (c = 0; c <= unbr.drawdeck.length-1; c++){
-            if (caption === false){
-    $("#preview").append("<div class ='cardprev " + unbr.drawdeck[c][0] + " " + unbr.drawdeck[c][1] +"'></div>");
-    }
-    if (caption === true){
-        $("#preview").append("<div class ='cardprev " + unbr.drawdeck[c][0] + " " + unbr.drawdeck[c][1] +"'><p>" + unbr.drawdeck[c][0] + "</p></div>");
-    }
-    }
+            if (caption === true){
+                $("#preview").append("<div class ='cardprev " + unbr.drawdeck[c][0] + " " + unbr.drawdeck[c][1] +"'><p>" + unbr.drawdeck[c][0] + "</p></div>");
+            } else {
+                $("#preview").append("<div class ='cardprev " + unbr.drawdeck[c][0] + " " + unbr.drawdeck[c][1] +"'></div>");
+            }
+        }
     } else {
-    for (i = 0; i <= 4; i++){
-     if (caption === false){
-    $("#preview").append("<div class ='cardprev " + unbr.drawdeck[i][0] + " " + unbr.drawdeck[i][1] +"'></div>");
+        for (i = 0; i <= 4; i++){
+            if (caption === false){
+                $("#preview").append("<div class ='cardprev " + unbr.drawdeck[i][0] + " " + unbr.drawdeck[i][1] +"'></div>");
+            }
+            if (caption === true){
+                $("#preview").append("<div class ='cardprev " + unbr.drawdeck[i][0] + " " + unbr.drawdeck[i][1] +"'><p>" + unbr.drawdeck[i][0] + "</p></div>");
+            }
+        }
     }
     if (caption === true){
-        $("#preview").append("<div class ='cardprev " + unbr.drawdeck[i][0] + " " + unbr.drawdeck[i][1] +"'><p>" + unbr.drawdeck[i][0] + "</p></div>");
+        $.fancybox({
+        'autoSize' : false,
+        'transitionIn': 'elastic',
+        'transitionOut': 'elastic',
+        'speedIn': 500,
+        'speedOut': 300,
+        'width' : 680,
+        'height' : 290,
+        'topRatio' : 0.85,
+        'href' : '#preview',
+        'closeBtn' : false,
+        'modal' : true
+        });
+    } else {
+        $.fancybox({
+        'autoSize' : true,
+        'transitionIn': 'elastic',
+        'transitionOut': 'elastic',
+        'speedIn': 500,
+        'speedOut': 300,
+        'width' : 680,
+        'height' : 280,
+        'topRatio' : 0.85,
+        'href' : '#preview',
+        'closeBtn' : false,
+        'modal' : true
+        });
     }
-    }
-    }
-    if (caption === false){
-    $.fancybox({
-    'autoSize' : true,
-    'transitionIn': 'elastic',
-    'transitionOut': 'elastic',
-    'speedIn': 500,
-    'speedOut': 300,
-    'width' : 680,
-    'height' : 280,
-    'topRatio' : 0.85,
-    'href' : '#preview',
-    'closeBtn' : false,
-    'modal' : true
-});
-}
-    if (caption === true){
-    $.fancybox({
-    'autoSize' : false,
-    'transitionIn': 'elastic',
-    'transitionOut': 'elastic',
-    'speedIn': 500,
-    'speedOut': 300,
-    'width' : 680,
-    'height' : 290,
-    'topRatio' : 0.85,
-    'href' : '#preview',
-    'closeBtn' : false,
-    'modal' : true
-});
-  }
 }
 
 
-//click selection for spirit sniper
+// click selection for spirit sniper
 
 $(document).on('click', '.cardprev', function() {
     if (unbr.sniping === true){
-    unbr.elements = $('.cardprev');
-    unbr.normselect = $('.cardprev').index(this);
-    unbr.selected[0] = (unbr.elements.length -unbr.elements.index(this))-1;
-    $('#selectedsnipe').attr('id','');
-    $(this).attr('id', 'selectedsnipe');
-    $('#snipeconfirm').remove();
-    $("#cardpreviewinstruction").append("<div id='snipeconfirm'><p class='option'>Is this card ok to discard?</p></div>");
+        unbr.elements = $('.cardprev');
+        unbr.normselect = $('.cardprev').index(this);
+        unbr.selected[0] = (unbr.elements.length -unbr.elements.index(this))-1;
+        $('#selectedsnipe').attr('id','');
+        $(this).attr('id', 'selectedsnipe');
+        $('#snipeconfirm').remove();
+        $("#cardpreviewinstruction").append("<div id='snipeconfirm'><p class='option'>Is this card ok to discard?</p></div>");
     }
 });
+
+// confirms card to snipe
 
 $(document).on('click', '#snipeconfirm', function() {
     unbr.spiritsnipe = true;
@@ -831,7 +829,7 @@ $(document).on('click', '#snipeconfirm', function() {
 });
 
 
-//lets the user kill a card in spirit view
+// lets the user kill a card in spirit view
 
 function spiritsniper(){
     var godcount = 0;
@@ -846,30 +844,29 @@ function spiritsniper(){
         }
     }
     if (unbr.spiritsnipe === true && unbr.drawdeck[unbr.normselect][1] != 'god'){
-    if (unbr.drawdeck[unbr.normselect][0] == 'ghost'){
-        unbr.ghostcount++;
-    }
-    unbr.discard.unshift(unbr.drawdeck[unbr.normselect]);
-    unbr.drawdeck.splice(unbr.normselect, 1);
-    $(".cardprev").slice(unbr.normselect, unbr.normselect+1).remove();
-    unbr.spiritsnipe = false;
-    unbr.sniping = false;
-    $("#preview").empty();
-    $("#preview").append("<div id ='cardpreviewinstruction'>Choose cards to swap their locations</div><div id ='okdone'><p class='option'>Ok, I'm finished.</p></div>");
-    for (i = 0; i <= 3; i++){
-        if (caption === false){
-    $("#preview").append("<div class ='cardprev2 " + unbr.drawdeck[i][0] + " " + unbr.drawdeck[i][1] +"'></div>");
-    }
-    if (caption === true){
-        $("#preview").append("<div class ='cardprev2 " + unbr.drawdeck[i][0] + " " + unbr.drawdeck[i][1] +"'><p>" + unbr.drawdeck[i][0] + "</p></div>");
-    }
-    }
-    //drawcard();
+        if (unbr.drawdeck[unbr.normselect][0] == 'ghost'){
+            unbr.ghostcount++;
+        }
+        unbr.discard.unshift(unbr.drawdeck[unbr.normselect]);
+        unbr.drawdeck.splice(unbr.normselect, 1);
+        $(".cardprev").slice(unbr.normselect, unbr.normselect+1).remove();
+        unbr.spiritsnipe = false;
+        unbr.sniping = false;
+        $("#preview").empty();
+        $("#preview").append("<div id ='cardpreviewinstruction'>Choose cards to swap their locations</div><div id ='okdone'><p class='option'>Ok, I'm finished.</p></div>");
+        for (i = 0; i <= 3; i++){
+            if (caption === false){
+                $("#preview").append("<div class ='cardprev2 " + unbr.drawdeck[i][0] + " " + unbr.drawdeck[i][1] +"'></div>");
+            }
+            if (caption === true){
+                $("#preview").append("<div class ='cardprev2 " + unbr.drawdeck[i][0] + " " + unbr.drawdeck[i][1] +"'><p>" + unbr.drawdeck[i][0] + "</p></div>");
+            }
+        }
     }
 }
 
 
-//click selection for spirit swapper
+// click selection for spirit swapper
 
 $(document).on('click', '.cardprev2', function() {
     if (unbr.sniping === false){
@@ -889,29 +886,29 @@ $(document).on('click', '.cardprev2', function() {
 });
 
 
-//swap function
+// swap function
 
 function swapper(arr, indexA, indexB) {    
     if (unbr.click1 === 2){
         unbr.click1 = 0;
-  var temp = arr[indexA];
-  arr[indexA] = arr[indexB];
-  arr[indexB] = temp;
-  if (caption === false){
-  $("#select1").replaceWith("<div class ='cardprev2 " + unbr.drawdeck[indexA][0] + " " + unbr.drawdeck[indexA][1] +"'></div>")
-  $("#select2").replaceWith("<div class ='cardprev2 " + unbr.drawdeck[indexB][0] + " " + unbr.drawdeck[indexB][1] +"'></div>")
+        var temp = arr[indexA];
+        arr[indexA] = arr[indexB];
+        arr[indexB] = temp;
+        if (caption === true){
+            $("#select1").replaceWith("<div class ='cardprev2 " + unbr.drawdeck[indexA][0] + " " + unbr.drawdeck[indexA][1] +"'><p>" + unbr.drawdeck[indexA][0] + "</p></div>")
+            $("#select2").replaceWith("<div class ='cardprev2 " + unbr.drawdeck[indexB][0] + " " + unbr.drawdeck[indexB][1] +"'><p>" + unbr.drawdeck[indexB][0] + "</p></div>")  
+        } else {
+            $("#select1").replaceWith("<div class ='cardprev2 " + unbr.drawdeck[indexA][0] + " " + unbr.drawdeck[indexA][1] +"'></div>")
+            $("#select2").replaceWith("<div class ='cardprev2 " + unbr.drawdeck[indexB][0] + " " + unbr.drawdeck[indexB][1] +"'></div>")
+        }
+        select1 = 0;
+        select2 = 0;
     }
-    if (caption === true){
-        $("#select1").replaceWith("<div class ='cardprev2 " + unbr.drawdeck[indexA][0] + " " + unbr.drawdeck[indexA][1] +"'><p>" + unbr.drawdeck[indexA][0] + "</p></div>")
-  $("#select2").replaceWith("<div class ='cardprev2 " + unbr.drawdeck[indexB][0] + " " + unbr.drawdeck[indexB][1] +"'><p>" + unbr.drawdeck[indexB][0] + "</p></div>")  
-    }
-  select1 = 0;
-  select2 = 0;
-}
 };
 
 
-//gives the player choices of how to play their cards, including dealing with ghosts and gods
+// gives the player choices of how to play their cards,
+// including dealing with ghosts and gods
 
 function cardchoice() {
     ghostcheck();
@@ -940,7 +937,7 @@ function cardchoice() {
 }
 
 
-//checks for valid move and autoplay if possible
+// checks for valid move and autoplay if possible
 
 function autoplay(){
     $('#selectedcard').attr('id','');
@@ -958,7 +955,7 @@ function autoplay(){
 }
 
 
-//play options for standard cards
+// play options for standard cards
 
 function standardoption(){
     $('#selectedcard').attr('id','');
@@ -973,8 +970,7 @@ function standardoption(){
         $("#infocard").append("<p>What would you like to do with this card?<br></p>");
         if (unbr.sequence.length === 0){
             $("#infocard").append("<p id='sequenceplay' class='option'>Play in sequence</p>");
-        }
-        else if (unbr.hand[unbr.selected[0]][1] !== unbr.sequence[unbr.sequence.length -1][1]){
+        } else if (unbr.hand[unbr.selected[0]][1] !== unbr.sequence[unbr.sequence.length -1][1]){
             $("#infocard").append("<p id='sequenceplay' class='option'>Play in sequence</p>");
         }
         if (unbr.hand[unbr.selected[0]][1] === 'spirit'){
@@ -985,7 +981,7 @@ function standardoption(){
 }
 
 
-//play options for ghost cards
+// play options for ghost cards
 
 function ghostoption(){
     $("#infocard").append("<p>Oh no! A ghost! What would you like to do?<br></p>");
@@ -1006,7 +1002,7 @@ function ghostoption(){
 }
 
 
-//play options for god cards
+// play options for god cards
 
 function godoption(){
     if (unbr.drawdeck.length < (5 + (8 - unbr.score))) {
@@ -1019,11 +1015,11 @@ function godoption(){
            $("#infocard").append("<p id='spiritscore' class='option'>You have a spirit with you of the appropriate type. Use it to make peace with this God?<br></p>"); 
         }
         $("#infocard").append("<p id='godshuffle' class='option'>Shuffle it back into the deck and draw a new card<br></p>");
-        }
+    }
 }
 
 
-//counts cards, updates visual totals, determines if win or loss has occured
+// counts cards, updates visual totals, determines if win or loss has occured
 
 function cardcount() {
     if (unbr.score === 8){
@@ -1043,17 +1039,17 @@ function cardcount() {
     if (unbr.scoring.length >= 1){
         for (var i = 0; i <= unbr.scoring.length -1; i++){
             if (caption === false){
-            $("#scorecard").prepend("<img src='img/" + unbr.scoring[i][0] + "score.png'>");
-        }
-        if (caption === true){
-            $("#scorecard").append("<p class='scoretext'> " + unbr.scoring[i][0] +"</p>");
-        }
+                $("#scorecard").prepend("<img src='img/" + unbr.scoring[i][0] + "score.png'>");
+            }
+            if (caption === true){
+                $("#scorecard").append("<p class='scoretext'> " + unbr.scoring[i][0] +"</p>");
+            }
         }
     }
 }
 
 
-//displays rules
+// displays rules
 
 $(document).on('click', '#rules', function() {
     $("#preview").empty();
@@ -1062,7 +1058,7 @@ $(document).on('click', '#rules', function() {
 });
 
 
-//discards card if player opts to do so
+// discards card if player opts to do so
 
 $(document).on('click', '#discardplay', function() {
     discardcard();
@@ -1076,7 +1072,7 @@ $(document).on('click', '#discardplay', function() {
 });
 
 
-//runs the sequence addition functions
+// runs the sequence addition functions
 
 $(document).on('click', '#sequenceplay', function() {
     $("#infocard").empty();
@@ -1087,7 +1083,7 @@ $(document).on('click', '#sequenceplay', function() {
 });
 
 
-//drops hand
+// drops hand
 
 $(document).on('click', '#drophand', function() {
     discardhand();
@@ -1099,7 +1095,7 @@ $(document).on('click', '#drophand', function() {
 });
 
 
-//allows player to avoid a ghost in exchange for a spirit
+// allows player to avoid a ghost in exchange for a spirit
 
 $(document).on('click', '#ghostspirit', function() {
     $("#infocard").empty();
@@ -1109,7 +1105,7 @@ $(document).on('click', '#ghostspirit', function() {
 });
 
 
-//cancels out of previous function
+// cancels out of previous function
 
 $(document).on('click', '#ghostcancel', function() {
     $("#infocard").empty();
@@ -1118,7 +1114,7 @@ $(document).on('click', '#ghostcancel', function() {
 });
 
 
-//selection for dropping 5 next unseen cards
+// selection for dropping 5 next unseen cards
 
 $(document).on('click', '#dropunseen', function() {
     $("#hand div:last").remove()
@@ -1131,30 +1127,10 @@ $(document).on('click', '#dropunseen', function() {
 });
 
 
-//shuffle god back into deck
+// shuffle god back into deck
 
 $(document).on('click', '#godshuffle', function() {
-    if (unbr.playingtutorial !== true){
-    unbr.limbo.unshift(unbr.hand[0]);
-    unbr.hand.shift();
-    $("#hand div:last").remove()
-    unbr.godpresent = false;
-    unbr.spiritcolour = false;
-    if (doomtimer === true){
-        doomreset();
-    }
-    $("#infocard").empty();
-    $("#infocard").append("<p>The God whisks you off to a new place in the forest.</p>");
-    if (unbr.hand.length < 5){
-        for (i = unbr.hand.length; i <= 5; i++){
-            if (unbr.ghostpresent === false && unbr.godpresent === false){
-                drawcard();
-                ghostcheck();
-                godcheck();
-            }
-        }
-    }
-    } else {
+    if (unbr.playingtutorial === true){
        unbr.drawdeck.push(unbr.hand[0]);
        unbr.hand.shift();
        $("#hand div:last").remove();
@@ -1162,6 +1138,26 @@ $(document).on('click', '#godshuffle', function() {
         unbr.godpresent = false;
         unbr.spiritcolour = false; 
         drawcard();
+    } else {
+        unbr.limbo.unshift(unbr.hand[0]);
+        unbr.hand.shift();
+        $("#hand div:last").remove()
+        unbr.godpresent = false;
+        unbr.spiritcolour = false;
+        if (doomtimer === true){
+            doomreset();
+        }
+        $("#infocard").empty();
+        $("#infocard").append("<p>The God whisks you off to a new place in the forest.</p>");
+        if (unbr.hand.length < 5){
+            for (i = unbr.hand.length; i <= 5; i++){
+                if (unbr.ghostpresent === false && unbr.godpresent === false){
+                    drawcard();
+                    ghostcheck();
+                    godcheck();
+                }
+            }
+        }
     }
 });
 
@@ -1176,11 +1172,10 @@ $(document).on('click', '#spiritplay', function() {
         unbr.counter = doom;
     }
     spiritpower();
-    
 });
 
 
-//use a spirit to score a god
+// use a spirit to score a god
 
 $(document).on('click', '#spiritscore', function() {
     $("#infocard").empty();
@@ -1190,7 +1185,7 @@ $(document).on('click', '#spiritscore', function() {
 });
 
 
-//cancels out of previous function
+// cancels out of previous function
 
 $(document).on('click', '#godcancel', function() {
     $("#infocard").empty();
@@ -1218,16 +1213,19 @@ $(document).on('click', '#deadend', function() {
 });
 
 
-//defines starting condition depending on game mode chosen
+// defines starting conditions depending on game mode chosen
 
-function normal(){
+function initstart(){
     $("#hand").empty();
     $("#sequence").empty();
     $("#cardsremaining").empty();
     $("#scorecard").empty();
     $("#infocard").empty();
-    
-    unbr.init();
+    unbr.init();    
+}
+
+function normal(){
+    initstart();
     unbr.hardplay = false;
     unbr.playingnormal = true;
     function addCards(cardType,numOfCards){
@@ -1235,7 +1233,6 @@ function normal(){
             unbr.drawdeck.push(cardType);
         };
     }
-
     addCards(['orange', 'leaf'],6);
     addCards(['orange', 'twig'],4);
     addCards(['orange', 'spirit'],3);
@@ -1259,14 +1256,8 @@ function normal(){
     addCards(['ghost', 'bad'],10);
 }
 
-function easy(){
-    $("#hand").empty();
-    $("#sequence").empty();
-    $("#cardsremaining").empty();
-    $("#scorecard").empty();
-    $("#infocard").empty();
-    
-    unbr.init();
+function easy(){    
+    initstart();
     unbr.hardplay = false;
     unbr.playingeasy = true;
     function addCards(cardType,numOfCards){
@@ -1274,7 +1265,6 @@ function easy(){
             unbr.drawdeck.push(cardType);
         };
     }
-
     addCards(['orange', 'leaf'],6);
     addCards(['orange', 'twig'],4);
     addCards(['orange', 'spirit'],4);
@@ -1298,14 +1288,8 @@ function easy(){
     addCards(['ghost', 'bad'],10);
 }
 
-function hard(){
-    $("#hand").empty();
-    $("#sequence").empty();
-    $("#cardsremaining").empty();
-    $("#scorecard").empty();
-    $("#infocard").empty();
-    
-    unbr.init();
+function hard(){    
+    initstart();
     unbr.hardplay = true;
     unbr.playinghard = true;
     function addCards(cardType,numOfCards){
@@ -1313,7 +1297,6 @@ function hard(){
             unbr.drawdeck.push(cardType);
         };
     }
-
     addCards(['orange', 'leaf'],6);
     addCards(['orange', 'twig'],4);
     addCards(['orange', 'spirit'],2);
@@ -1334,26 +1317,18 @@ function hard(){
     addCards(['purple', 'spirit'],2);
     addCards(['purple', 'god'],2);
 
-    addCards(['yellow', 'spirit'],4);
-
     addCards(['ghost', 'bad'],10);
+    addCards(['yellow', 'spirit'],4);
 }
 
-function master(){
-    $("#hand").empty();
-    $("#sequence").empty();
-    $("#cardsremaining").empty();
-    $("#scorecard").empty();
-    $("#infocard").empty();
-    
-    unbr.init();
+function master(){    
+    initstart();
     unbr.playingmaster = true;
     function addCards(cardType,numOfCards){
         for (var i = numOfCards; i >= 1; i--) {
             unbr.drawdeck.push(cardType);
         };
     }
-
     addCards(['orange', 'leaf'],5);
     addCards(['orange', 'twig'],4);
     addCards(['orange', 'spirit'],2);
@@ -1374,21 +1349,13 @@ function master(){
     addCards(['purple', 'spirit'],2);
     addCards(['purple', 'god'],2);
 
-    addCards(['yellow', 'spirit'],3);
-
-    addCards(['dead', 'end'],6);
-
     addCards(['ghost', 'bad'],10);
+    addCards(['yellow', 'spirit'],3);
+    addCards(['dead', 'end'],6);
 }
 
-function tutorial(){
-    $("#hand").empty();
-    $("#sequence").empty();
-    $("#cardsremaining").empty();
-    $("#scorecard").empty();
-    $("#infocard").empty();
-    
-    unbr.init();
+function tutorial(){    
+    initstart();
     unbr.hardplay = false;
     unbr.playingtutorial = true;
     function addCards(cardType,numOfCards){
@@ -1396,7 +1363,6 @@ function tutorial(){
             unbr.drawdeck.push(cardType);
         };
     }
-
     addCards(['green', 'leaf'],6);
     addCards(['green', 'twig'],1);
     addCards(['purple', 'leaf'],1);
@@ -1432,7 +1398,7 @@ function tutorial(){
 }
 
 
-//defines event trigger in various scenarios
+// defines layout and setup depending on game mode chosen
 
 function defaultstart(){
     $("#infobox").empty();
@@ -1475,7 +1441,10 @@ $(document).on('click', '#master', function() {
     drawhandstart();
 });
 
-$(document).on('click', '#menubutton', function() {
+
+// defines menu options
+
+function menuoptions(){
     $("#infocard").empty().hide();
     $("#lamp2").hide();
     $("#lamp1").hide();
@@ -1494,65 +1463,33 @@ $(document).on('click', '#menubutton', function() {
     unbr.playingmaster = false;
     unbr.playingtutorial = false;
     $("#hand").append("<center><img src='img/logo.png' style='margin-top: -60px;'></center><br><div id='title'>UNDERBRUSH</div>");
-    if (hardwin === 0){
-        $("#infocard").append("<p id='easy' class='option'>Easy Mode</p><p id='normal' class='option'>Normal Mode</p><p id='hard' class='option'>Hard Mode</p><p id='tutorial' class='option'>Tutorial</p>");
-    } else {
-        $("#infocard").append("<p id='easy' class='option'>Easy Mode</p><p id='normal' class='option'>Normal Mode</p><p id='hard' class='option'>Hard Mode</p><p id='master' class='option'>Master Mode</p><p id='tutorial' class='option'>Tutorial</p>");
+    $("#infocard").append("<p id='easy' class='option'>Easy Mode</p><p id='normal' class='option'>Normal Mode</p><p id='hard' class='option'>Hard Mode</p>");
+    if (hardwin !== 0){
+        $("#infocard").append("<p id='master' class='option'>Master Mode</p>");
     }
-    if (doomtimer === false && hardwin >= 1){
-        $("#infocard").append("<p id='doomon' class='option'>Turn Doom Timer On</p>");
-    }
-    if (doomtimer === true && hardwin >= 1){
-        $("#infocard").append("<p id='doomoff' class='option'>Turn Doom Timer Off</p>");
-    }
-    if (caption === false){
-        $("#infocard").append("<p id='captionon' class='option'>Turn On Colour Description</p>");
+    $("#infocard").append("<p id='tutorial' class='option'>Tutorial</p><p id='rules' class='option'>Rules</p>");
+    if (hardwin !== 0){
+        if (doomtimer === true){
+            $("#infocard").append("<p id='doomoff' class='option'>Turn Doom Timer Off</p>");
+        } else {
+            $("#infocard").append("<p id='doomon' class='option'>Turn Doom Timer On</p>");
+        }
     }
     if (caption === true){
         $("#infocard").append("<p id='captionoff' class='option'>Turn Off Colour Description</p>");
+    } else {
+        $("#infocard").append("<p id='captionon' class='option'>Turn On Colour Description</p>");
     }
     $("#hand").fadeIn(800);
     $("#infocard").fadeIn(600);
+}
+
+$(document).on('click', '#menubutton', function() {
+    menuoptions();
 });
 
 $(document).on('click', '#menu', function() {
-    $("#infocard").empty().hide();
-    $("#lamp2").hide();
-    $("#lamp1").hide();
-    $("#sequence").empty();
-    $("#hand").empty();
-    $("#hand").hide();
-    $("#preview").empty();
-    $("#topmenu").hide();
-    if (doomtimer === true){
-        $("#doomcount").empty();
-        clearInterval(interval);
-    }
-    unbr.playingeasy = false;
-    unbr.playingnormal = false;
-    unbr.playinghard = false;
-    unbr.playingmaster = false;
-    unbr.playingtutorial = false;
-    $("#hand").append("<center><img src='img/logo.png' style='margin-top: -60px;'></center><br><div id='title'>UNDERBRUSH</div>");
-    if (hardwin === 0){
-        $("#infocard").append("<p id='easy' class='option'>Easy Mode</p><p id='normal' class='option'>Normal Mode</p><p id='hard' class='option'>Hard Mode</p><p id='tutorial' class='option'>Tutorial</p>");
-    } else {
-        $("#infocard").append("<p id='easy' class='option'>Easy Mode</p><p id='normal' class='option'>Normal Mode</p><p id='hard' class='option'>Hard Mode</p><p id='master' class='option'>Master Mode</p><p id='tutorial' class='option'>Tutorial</p>");
-    }
-    if (doomtimer === false && hardwin >= 1){
-        $("#infocard").append("<p id='doomon' class='option'>Turn Doom Timer On</p>");
-    }
-    if (doomtimer === true && hardwin >= 1){
-        $("#infocard").append("<p id='doomoff' class='option'>Turn Doom Timer Off</p>");
-    }
-    if (caption === false){
-        $("#infocard").append("<p id='captionon' class='option'>Turn On Colour Description</p>");
-    }
-    if (caption === true){
-        $("#infocard").append("<p id='captionoff' class='option'>Turn Off Colour Description</p>");
-    }
-    $("#hand").fadeIn(800);
-    $("#infocard").fadeIn(600);
+    menuoptions();
 });
 
 $(document).on('click', '#captionon', function() {
@@ -1574,6 +1511,9 @@ $(document).on('click', '#doomoff', function() {
     doomtimer = false;
     $("#doomoff").replaceWith("<p id='doomon' class='option'>Turn Doom Timer On</p>");
 });
+
+
+// defines the behaviour of the doom counter
 
 function doomcount(){
     if (unbr.counter === doom && unbr.godpresent === false && unbr.ghostpresent === false && unbr.gameover === false){
@@ -1625,12 +1565,11 @@ function tutorialchoices(){
     $(unbr.selectedcard).attr('id', 'selectedcard');
     unbr.selectedcard = 0;
     if (unbrtut.step1 === true){
-    $("#infocard").append("<p>When you select a card, you can either play it into the game sequence, or discard it. For now, let's play this card.</p>");
-     $("#infocard").append("<p id='sequenceplay' class='option'>Play in sequence</p>");
+        $("#infocard").append("<p>When you select a card, you can either play it into the game sequence, or discard it. For now, let's play this card.</p>");
+         $("#infocard").append("<p id='sequenceplay' class='option'>Play in sequence</p>");
     }
     if (unbrtut.step2 === true){
         $("#infocard").append("<p>Great! Now, because we cannot play two leaves in a row, and we do not have any other kinds of cards, we're going to be forced to discard something. Click a card to discard it.</p>");
-
     }
     if (unbrtut.step3 === true){
         $("#infocard").empty();
@@ -1641,7 +1580,6 @@ function tutorialchoices(){
         unbrtut.step2 = false;
         $("#infocard").empty();
         $("#infocard").append("<p>Hey look! A twig! Let's select that and play that into our sequence. This is a legal move because it is not the same symbol as the leaf.</p>");
-
     }
     if (unbrtut.step5 === true  && unbr.hand[unbr.selected[0]][1] === 'twig'){
         $("#infocard").empty();
@@ -1679,17 +1617,16 @@ function tutorialchoices(){
         $("#infocard").append("<p id='spiritplay' class='option'>Use spirit power</p>");
     }
     if (unbrtut.step12 === true){
-    if (unbr.hand[0][1] != "god"){
-        $("#infocard").empty();
-        $("#infocard").append("<p>You may have seen something odd in those 5 cards. That was another God. Gods can be pulled into your hand, but if you do draw one, you must reshuffle it immediately, UNLESS you have a spirit of the same colour in your hand. If you do have one, you can actually score the God immediately without having to build a 3 colour in a row sequence. For now, just play a few more cards. You've almost learned the basics of the game.</p>");
-        unbrtut.step13 = true;
-    }
-    else if (unbr.hand[0][1] == "god"){
-        $("#infocard").empty();
-        $("#infocard").append("<p>You seem to have found a God amongst the twigs. Gods reside in the deck like any other card. If you draw one, it must be reshuffled into the deck immediately, UNLESS you have a spirit of the same colour in your hand. If you do have one, you can actually score the God immediately without having to build a 3 colour in a row sequence. Shuffle it back in and proceed to play the remaining cards.</p>");
-        $("#infocard").append("<p id='godshuffle' class='option'>Shuffle it back into the deck and draw a new card<br></p>");
-        unbrtut.step13 = true;
-    }
+        if (unbr.hand[0][1] != "god"){
+            $("#infocard").empty();
+            $("#infocard").append("<p>You may have seen something odd in those 5 cards. That was another God. Gods can be pulled into your hand, but if you do draw one, you must reshuffle it immediately, UNLESS you have a spirit of the same colour in your hand. If you do have one, you can actually score the God immediately without having to build a 3 colour in a row sequence. For now, just play a few more cards. You've almost learned the basics of the game.</p>");
+            unbrtut.step13 = true;
+        } else if (unbr.hand[0][1] == "god"){
+            $("#infocard").empty();
+            $("#infocard").append("<p>You seem to have found a God amongst the twigs. Gods reside in the deck like any other card. If you draw one, it must be reshuffled into the deck immediately, UNLESS you have a spirit of the same colour in your hand. If you do have one, you can actually score the God immediately without having to build a 3 colour in a row sequence. Shuffle it back in and proceed to play the remaining cards.</p>");
+            $("#infocard").append("<p id='godshuffle' class='option'>Shuffle it back into the deck and draw a new card<br></p>");
+            unbrtut.step13 = true;
+        }
     }
     if (unbrtut.step12 !== true && unbr.godpresent === true){
         $("#infocard").append("<p>A God has appeared before you<br></p>");
@@ -1700,11 +1637,12 @@ function tutorialchoices(){
         $("#infocard").append("<p>Oh no! A Ghost! Ghosts roam the forest, attempting to prevent you from reaching Gods. When you encounter a Ghost, you have a few options: Discard your hand, discard the next 5 cards from the deck, or discard a spirit if you have one.</p>");
         spiritcheck();
         if (spirithere > 0){
-                $("#infocard").append("<p id='donetut1' class='option donetutorial'>Discard a spirit card to escape<br></p>");
-            }
-            if (unbr.drawdeck.length > 4){
-            $("#infocard").append("<p id='donetut2' class='option donetutorial'>Discard entire hand<br></p>"); 
-        } if (unbr.drawdeck.length > 4){
+            $("#infocard").append("<p id='donetut1' class='option donetutorial'>Discard a spirit card to escape<br></p>");
+        }
+        if (unbr.drawdeck.length > 4){
+        $("#infocard").append("<p id='donetut2' class='option donetutorial'>Discard entire hand<br></p>"); 
+        }
+        if (unbr.drawdeck.length > 4){
             $("#infocard").append("<p id='donetut3' class='option donetutorial'>Discard the next 5 unseen cards<br></p>");
         }
     }
@@ -1712,17 +1650,16 @@ function tutorialchoices(){
 
 function tutorialgod(){
     if (unbrtut.step12 === true){
-    if (unbr.hand[0][1] != "god"){
-        $("#infocard").empty();
-        $("#infocard").append("<p>You may have seen something odd in those 5 cards. That was another God. Gods can be pulled into your hand, but if you do draw one, you must reshuffle it immediately, UNLESS you have a spirit of the same colour in your hand. If you do have one, you can actually score the God immediately without having to build a 3 colour in a row sequence. For now, just play a few more cards. You've almost learned the basics of the game.</p>");
-        unbrtut.step13 = true;
-    }
-    else if (unbr.hand[0][1] == "god"){
-        $("#infocard").empty();
-        $("#infocard").append("<p>You seem to have found a God amongst the twigs. Gods reside in the deck like any other card. If you draw one, it must be reshuffled into the deck immediately, UNLESS you have a spirit of the same colour in your hand. If you do have one, you can actually score the God immediately without having to build a 3 colour in a row sequence. Shuffle it back in and proceed to play the remaining cards.</p>");
-        $("#infocard").append("<p id='godshuffle' class='option'>Shuffle it back into the deck and draw a new card<br></p>");
-        unbrtut.step13 = true;
-    }
+        if (unbr.hand[0][1] != "god"){
+            $("#infocard").empty();
+            $("#infocard").append("<p>You may have seen something odd in those 5 cards. That was another God. Gods can be pulled into your hand, but if you do draw one, you must reshuffle it immediately, UNLESS you have a spirit of the same colour in your hand. If you do have one, you can actually score the God immediately without having to build a 3 colour in a row sequence. For now, just play a few more cards. You've almost learned the basics of the game.</p>");
+            unbrtut.step13 = true;
+        } else if (unbr.hand[0][1] == "god"){
+            $("#infocard").empty();
+            $("#infocard").append("<p>You seem to have found a God amongst the twigs. Gods reside in the deck like any other card. If you draw one, it must be reshuffled into the deck immediately, UNLESS you have a spirit of the same colour in your hand. If you do have one, you can actually score the God immediately without having to build a 3 colour in a row sequence. Shuffle it back in and proceed to play the remaining cards.</p>");
+            $("#infocard").append("<p id='godshuffle' class='option'>Shuffle it back into the deck and draw a new card<br></p>");
+            unbrtut.step13 = true;
+        }
     }
     if (unbrtut.step12 !== true && unbr.godpresent === true){
         $("#infocard").append("<p>A God has appeared before you<br></p>");
@@ -1736,8 +1673,7 @@ function tutorialbranches(){
         $("#infocard").append("<p>What would you like to do with this card?<br></p>");
         if (unbr.sequence.length === 0){
             $("#infocard").append("<p id='sequenceplay' class='option'>Play in sequence</p>");
-        }
-        else if (unbr.hand[unbr.selected[0]][1] !== unbr.sequence[unbr.sequence.length -1][1]){
+        } else if (unbr.hand[unbr.selected[0]][1] !== unbr.sequence[unbr.sequence.length -1][1]){
             $("#infocard").append("<p id='sequenceplay' class='option'>Play in sequence</p>");
         }
         if (unbr.hand[unbr.selected[0]][1] === 'spirit'){
@@ -1746,35 +1682,35 @@ function tutorialbranches(){
         $("#infocard").append("<p id='discardplay' class='option'>Discard and draw new card</p>");
     }
     if (unbrtut.step10 === true && unbr.hand[unbr.selected[0]][1] === 'spirit'){
-            unbrtut.step11 = true;
-            tutorialchoices();
-        } else if (unbrtut.step10 === true && unbr.hand[unbr.selected[0]][1] != 'spirit') {
-            $("#infocard").empty();
+        unbrtut.step11 = true;
+        tutorialchoices();
+    } else if (unbrtut.step10 === true && unbr.hand[unbr.selected[0]][1] != 'spirit') {
+        $("#infocard").empty();
         $("#infocard").append("<p>Choose the spirit card to use its power.</p>");
-        }
+    }
     if (unbrtut.step8 === true){
-            unbrtut.step9 = true;
-            tutorialchoices();
-        }
+        unbrtut.step9 = true;
+        tutorialchoices();
+    }
     if (unbrtut.step6 === true && unbr.hand[unbr.selected[0]][0] === 'green'){
-            unbrtut.step7 = true;
-            tutorialchoices();
-        } else if (unbrtut.step6 === true && unbr.hand[unbr.selected[0]][0] != 'green') {
-            $("#infocard").empty();
+        unbrtut.step7 = true;
+        tutorialchoices();
+    } else if (unbrtut.step6 === true && unbr.hand[unbr.selected[0]][0] != 'green') {
+        $("#infocard").empty();
         $("#infocard").append("<p>Choose a green leaf card. We could play this purple leaf instead, but we would be giving up our green sequence so far.</p>");
-        }
+    }
     if (unbrtut.step4 === true && unbr.hand[unbr.selected[0]][1] === 'twig'){
-            unbrtut.step5 = true;
-            tutorialchoices();
-        } else if (unbrtut.step4 === true && unbr.hand[unbr.selected[0]][1] != 'twig') {
-            $("#infocard").empty();
+        unbrtut.step5 = true;
+        tutorialchoices();
+    } else if (unbrtut.step4 === true && unbr.hand[unbr.selected[0]][1] != 'twig') {
+        $("#infocard").empty();
         $("#infocard").append("<p>Choose the green twig card.</p>");
-        }
-        if (unbrtut.step2 === true){
-            unbrtut.step3 = true;
-            tutorialchoices();
-        }
-        if (unbrtut.step1 === true){
+    }
+    if (unbrtut.step2 === true){
+        unbrtut.step3 = true;
+        tutorialchoices();
+    }
+    if (unbrtut.step1 === true){
         tutorialchoices();
     }
 }
@@ -1785,18 +1721,18 @@ function tutorialimmediate(){
         unbrtut.step2 = true;
         tutorialchoices();
     }
-        if (unbrtut.step3 === true){
+    if (unbrtut.step3 === true){
         unbrtut.step3 = false;
         unbrtut.step4 = true;
         tutorialchoices();
     }
-        if (unbrtut.step5 === true){
+    if (unbrtut.step5 === true){
         unbrtut.step5 = false;
         unbrtut.step6 = true;
         unbrtut.step4 = false;
         tutorialchoices();
     }
-        if (unbrtut.step7 === true){
+    if (unbrtut.step7 === true){
         unbrtut.step7 = false;
         unbrtut.step8 = true;
         unbrtut.step6 = false;
