@@ -1224,15 +1224,17 @@ function initstart(){
     unbr.init();    
 }
 
+function addCards(cardType,numOfCards){
+    for (var i = numOfCards; i >= 1; i--) {
+        unbr.drawdeck.push(cardType);
+    };
+}
+
 function normal(){
     initstart();
     unbr.hardplay = false;
     unbr.playingnormal = true;
-    function addCards(cardType,numOfCards){
-        for (var i = numOfCards; i >= 1; i--) {
-            unbr.drawdeck.push(cardType);
-        };
-    }
+
     addCards(['orange', 'leaf'],6);
     addCards(['orange', 'twig'],4);
     addCards(['orange', 'spirit'],3);
@@ -1260,11 +1262,7 @@ function easy(){
     initstart();
     unbr.hardplay = false;
     unbr.playingeasy = true;
-    function addCards(cardType,numOfCards){
-        for (var i = numOfCards; i >= 1; i--) {
-            unbr.drawdeck.push(cardType);
-        };
-    }
+
     addCards(['orange', 'leaf'],6);
     addCards(['orange', 'twig'],4);
     addCards(['orange', 'spirit'],4);
@@ -1292,11 +1290,7 @@ function hard(){
     initstart();
     unbr.hardplay = true;
     unbr.playinghard = true;
-    function addCards(cardType,numOfCards){
-        for (var i = numOfCards; i >= 1; i--) {
-            unbr.drawdeck.push(cardType);
-        };
-    }
+
     addCards(['orange', 'leaf'],6);
     addCards(['orange', 'twig'],4);
     addCards(['orange', 'spirit'],2);
@@ -1324,11 +1318,7 @@ function hard(){
 function master(){    
     initstart();
     unbr.playingmaster = true;
-    function addCards(cardType,numOfCards){
-        for (var i = numOfCards; i >= 1; i--) {
-            unbr.drawdeck.push(cardType);
-        };
-    }
+
     addCards(['orange', 'leaf'],5);
     addCards(['orange', 'twig'],4);
     addCards(['orange', 'spirit'],2);
@@ -1358,11 +1348,7 @@ function tutorial(){
     initstart();
     unbr.hardplay = false;
     unbr.playingtutorial = true;
-    function addCards(cardType,numOfCards){
-        for (var i = numOfCards; i >= 1; i--) {
-            unbr.drawdeck.push(cardType);
-        };
-    }
+
     addCards(['green', 'leaf'],6);
     addCards(['green', 'twig'],1);
     addCards(['purple', 'leaf'],1);
