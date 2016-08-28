@@ -1,11 +1,11 @@
 //initial variables
 
 var doom = 10
-var hardwin = 1;
+var hardwin = 0;
 var interval = 0;
 
 var caption = false;
-var doomtimer = true;
+var doomtimer = false;
 var baileyplay = false;
 
 var unbr = {};
@@ -258,8 +258,8 @@ function win() {
     $("#preview").empty();
     $("#preview").append("<div id='cardpreviewinstruction'><p>You got all 8! You won with " + unbr.drawdeck.length + " cards left in the deck.</p></div>");
     notificationcloseclick();
-        unbr.gameover = true;
-        if (doomtimer === true){
+    unbr.gameover = true;
+    if (doomtimer === true){
         $("#doomcount").empty();
         clearInterval(interval);
     }
@@ -295,12 +295,11 @@ function loss() {
     $("#preview").empty();
     $("#preview").append("<div id='cardpreviewinstruction'><p>Oh no! You lost! Try again!</p></div>");
     notificationcloseclick();
-        unbr.gameover = true;
-        if (doomtimer === true){
+    unbr.gameover = true;
+    if (doomtimer === true){
         $("#doomcount").empty();
         clearInterval(interval);
     }
-
     if (unbr.playingeasy === true){
         $("#infocard").append("<br><p class='option' id='easy'>Play Again?</p>");    
     }
@@ -331,6 +330,7 @@ function ghostcheck() {
     }
 }
 
+
 //function checks for spirit card in hand
 
 function spiritcheck() { 
@@ -343,7 +343,8 @@ function spiritcheck() {
 }
 
 
-//if a god card is drawn, this function checks for any spirits in hand, and, if the right colour is present, offers to let the player trade in that spirit for an immmediate point
+//if a god card is drawn, this function checks for any spirits in hand and if the right colour is present
+//offers to let the player trade in that spirit for an immmediate point
 
 function godcheck() {
     for (g = 0, k = unbr.hand.length - 1; g <= k; g++){
@@ -478,7 +479,7 @@ function sequencecheck() {
 }
 
 
-//gets the selection from clicking, which can be used to identify the card clicked for purposes of cross examining it with hand. Also resolves special cases with gods and ghosts in selection
+// double click event triggers auto play is possible
 
 $(document).on('dblclick', '.card', function() {
     if (unbr.gameover === false && unbr.playingtutorial === false){
@@ -551,7 +552,9 @@ $(document).on('dblclick', '.card', function() {
 });
 
 
-
+// gets the selection from click event, which can then be used to identify
+// the card selected for purposes of cross examining it with hand
+// also resolves special cases with gods and ghosts in selection
 
 $(document).on('click', '.card', function() {
     if (unbr.gameover === false){
@@ -710,39 +713,36 @@ function dropunseen(){
     drawcard();   
 }
 
+
 function godindicator(){
     $("#preview").empty();
     $("#preview").append("<div id ='cardpreviewinstruction'>You scored a God!</div><br>");
     if (caption === false){
-    $("#preview").append("<div class ='cardprev " + unbr.scoring[0][0] + " " + unbr.scoring[0][1] +"'></div>");
-    }
-    if (caption === true){
-      $("#preview").append("<div class ='cardprev " + unbr.scoring[0][0] + " " + unbr.scoring[0][1] +"'><p>" + unbr.scoring[0][0] + "</p></div>");  
-    }
-    if (caption === false){
-    notificationcloseclick();
-    }
-    if (caption === true){
+        $("#preview").append("<div class ='cardprev " + unbr.scoring[0][0] + " " + unbr.scoring[0][1] +"'></div>");
+        notificationcloseclick();
+    } else {
+        $("#preview").append("<div class ='cardprev " + unbr.scoring[0][0] + " " + unbr.scoring[0][1] +"'><p>" + unbr.scoring[0][0] + "</p></div>");  
         $.fancybox({
-    'autoSize' : false,
-    'transitionIn': 'elastic',
-    'transitionOut': 'elastic',
-    'speedIn': 500,
-    'speedOut': 300,
-    'width' : 150,
-    'height' : 260,
-    'topRatio' : 0.5,
-    'href' : '#preview',
-    'closeBtn' : false,
-    'modal' : false,
-    'closeClick' : true
-    });
+            'autoSize' : false,
+            'transitionIn': 'elastic',
+            'transitionOut': 'elastic',
+            'speedIn': 500,
+            'speedOut': 300,
+            'width' : 150,
+            'height' : 260,
+            'topRatio' : 0.5,
+            'href' : '#preview',
+            'closeBtn' : false,
+            'modal' : false,
+            'closeClick' : true
+        });
     }
 }
 
 $(document).ready(function() {
     $(".fancybox").fancybox();
 });    
+
 
 //creates the spirit power view
 
@@ -752,6 +752,7 @@ function spiritpower(){
     $(".card").slice(unbr.normselect, unbr.normselect+1).remove();
     spiritview();
 }
+
 
 //does the visual parts of the spirit power
 
@@ -809,6 +810,7 @@ function spiritview(){
   }
 }
 
+
 //click selection for spirit sniper
 
 $(document).on('click', '.cardprev', function() {
@@ -827,6 +829,7 @@ $(document).on('click', '#snipeconfirm', function() {
     unbr.spiritsnipe = true;
     spiritsniper();
 });
+
 
 //lets the user kill a card in spirit view
 
@@ -865,24 +868,24 @@ function spiritsniper(){
     }
 }
 
+
 //click selection for spirit swapper
 
 $(document).on('click', '.cardprev2', function() {
     if (unbr.sniping === false){
         if (unbr.click1 == 0){
-    unbr.swapselect1 = $('.cardprev2').index(this);
-    $(this).attr("id", "select1");
-    unbr.click1 = 1;
+            unbr.swapselect1 = $('.cardprev2').index(this);
+            $(this).attr("id", "select1");
+            unbr.click1 = 1;
+        } else if (unbr.click1 == 1){
+            unbr.swapselect2 = $('.cardprev2').index(this);
+            $(this).attr("id", "select2");
+            unbr.click1 = 2;
+        }
+        if (unbr.click1 === 2){
+            swapper(unbr.drawdeck, unbr.swapselect1, unbr.swapselect2);
+        }
     }
-       else if (unbr.click1 == 1){
-    unbr.swapselect2 = $('.cardprev2').index(this);
-    $(this).attr("id", "select2");
-    unbr.click1 = 2;
-    }
-    if (unbr.click1 === 2){
-    swapper(unbr.drawdeck, unbr.swapselect1, unbr.swapselect2);
-}
-}
 });
 
 
@@ -954,6 +957,7 @@ function autoplay(){
     }
 }
 
+
 //play options for standard cards
 
 function standardoption(){
@@ -1001,6 +1005,7 @@ function ghostoption(){
     }
 }
 
+
 //play options for god cards
 
 function godoption(){
@@ -1016,6 +1021,7 @@ function godoption(){
         $("#infocard").append("<p id='godshuffle' class='option'>Shuffle it back into the deck and draw a new card<br></p>");
         }
 }
+
 
 //counts cards, updates visual totals, determines if win or loss has occured
 
@@ -1084,10 +1090,10 @@ $(document).on('click', '#sequenceplay', function() {
 //drops hand
 
 $(document).on('click', '#drophand', function() {
-   discardhand();
-   unbr.ghostpresent = false;
-   if (doomtimer === true){
-       doomreset();
+    discardhand();
+    unbr.ghostpresent = false;
+    if (doomtimer === true){
+        doomreset();
     }
     $("#infocard").empty();
 });
@@ -1223,6 +1229,7 @@ function normal(){
     
     unbr.init();
     unbr.hardplay = false;
+    unbr.playingnormal = true;
     function addCards(cardType,numOfCards){
         for (var i = numOfCards; i >= 1; i--) {
             unbr.drawdeck.push(cardType);
@@ -1261,6 +1268,7 @@ function easy(){
     
     unbr.init();
     unbr.hardplay = false;
+    unbr.playingeasy = true;
     function addCards(cardType,numOfCards){
         for (var i = numOfCards; i >= 1; i--) {
             unbr.drawdeck.push(cardType);
@@ -1299,6 +1307,7 @@ function hard(){
     
     unbr.init();
     unbr.hardplay = true;
+    unbr.playinghard = true;
     function addCards(cardType,numOfCards){
         for (var i = numOfCards; i >= 1; i--) {
             unbr.drawdeck.push(cardType);
@@ -1338,7 +1347,7 @@ function master(){
     $("#infocard").empty();
     
     unbr.init();
-
+    unbr.playingmaster = true;
     function addCards(cardType,numOfCards){
         for (var i = numOfCards; i >= 1; i--) {
             unbr.drawdeck.push(cardType);
@@ -1381,6 +1390,7 @@ function tutorial(){
     
     unbr.init();
     unbr.hardplay = false;
+    unbr.playingtutorial = true;
     function addCards(cardType,numOfCards){
         for (var i = numOfCards; i >= 1; i--) {
             unbr.drawdeck.push(cardType);
@@ -1429,38 +1439,40 @@ function defaultstart(){
     $("#topmenu").fadeIn(300);
     $("#lamp2").fadeIn(800);
     $("#lamp1").fadeIn(300);
-    if (doomtimer === true){
-        doomreset();
-    }
-    shuffle(unbr.drawdeck);
     unbr.lamptotal = unbr.drawdeck.length - 5;
     unbr.lamppercent = 1;
     lampfade();
-    drawhandstart();
+    if (doomtimer === true){
+        doomreset();
+    }
 }
 
 $(document).on('click', '#easy', function() {
-    unbr.playingeasy = true;
     easy();
     defaultstart();
+    shuffle(unbr.drawdeck);
+    drawhandstart();
 });
 
 $(document).on('click', '#normal', function() {
-    unbr.playingnormal = true;
     normal();
     defaultstart();
+    shuffle(unbr.drawdeck);
+    drawhandstart();
 });
 
 $(document).on('click', '#hard', function() {
-    unbr.playinghard = true;
     hard();
     defaultstart();
+    shuffle(unbr.drawdeck);
+    drawhandstart();
 });
 
 $(document).on('click', '#master', function() {
-    unbr.playingmaster = true;
     master();
     defaultstart();
+    shuffle(unbr.drawdeck);
+    drawhandstart();
 });
 
 $(document).on('click', '#menubutton', function() {
@@ -1601,18 +1613,11 @@ function counter(){
 //Tutorial stuff
 
 $(document).on('click', '#tutorial', function() {
-    $("#infobox").empty();
-    $("#topmenu").fadeIn(300);
-    $("#lamp2").fadeIn(800);
-    $("#lamp1").fadeIn(300);
     tutorial();
-    unbr.lamptotal = unbr.drawdeck.length - 5;
-    unbr.lamppercent = 1;
-    lampfade();
+    defaultstart();
     drawhandstart();
     $("#infocard").append("<p>Hi! Welcome to Underbrush. In this game, you are lost a forest of Gods, Spirits and Ghosts. You will need to find 8 Gods before the deck runs out to win. To do this, you need to play 3 cards of the same colour in a row. The trick being that you can never play the same symbol twice in a row. The cards above are your hand. Try clicking one of them.<p>");
     unbrtut.step1 = true;
-    unbr.playingtutorial = true;
 });
 
 function tutorialchoices(){
