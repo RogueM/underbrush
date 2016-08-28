@@ -1,10 +1,11 @@
 //initial variables
 
+var doom = 10
 var hardwin = 0;
 var interval = 0;
 
 var caption = false;
-var doomtimer = false;
+var doomtimer = true;
 var baileyplay = false;
 
 var unbr = {};
@@ -13,7 +14,6 @@ var unbrtut = {};
 unbr.init = function(){
     unbr.click1 = 0;
     unbr.colourgrab = 0;
-    unbr.counter = 5;
     unbr.elements = 0;
     unbr.ghostcount = 0;
     unbr.godcolour = 0;
@@ -50,6 +50,8 @@ unbr.init = function(){
     unbr.scoring = [];
     unbr.selected = [];
     unbr.sequence = [];    
+    
+    unbr.counter = doom;
 };
 
 unbrtut.init = function(){
@@ -200,6 +202,12 @@ function notificationcloseclick(){
 
 function lampfade(){
     $("#lamp1").fadeTo("slow", unbr.lamppercent);
+}
+
+function doomreset(){
+    clearInterval(interval);
+    unbr.counter = doom;
+    counter();
 }
 
 
@@ -481,9 +489,7 @@ $(document).on('dblclick', '.card', function() {
                     standardoption();
                 } else {
                     if (doomtimer === true){
-                        clearInterval(interval);
-                        unbr.counter = 5;
-                        counter();
+                        doomreset()
                     }
                     autoplay();
                 }
@@ -507,9 +513,7 @@ $(document).on('dblclick', '.card', function() {
                 $("#infocard").empty();
                 drawcard();
                 if (doomtimer === true){
-                    clearInterval(interval);
-                    unbr.counter = 5;
-                    counter();
+                    doomreset();
                 }
             } else {
                 $("#infocard").empty();
@@ -534,9 +538,7 @@ $(document).on('dblclick', '.card', function() {
                 unbr.score++;
                 godindicator();
                 if (doomtimer === true){
-                    clearInterval(interval);
-                    unbr.counter = 5;
-                    counter();
+                    doomreset();
                 }
                 drawcard();
             }
@@ -571,9 +573,7 @@ $(document).on('click', '.card', function() {
                 $("#infocard").empty();
                 drawcard();
                 if (doomtimer === true){
-                    clearInterval(interval);
-                    unbr.counter = 5;
-                    counter();
+                    doomreset();
                 }
             } else {
                 $("#infocard").empty();
@@ -598,9 +598,7 @@ $(document).on('click', '.card', function() {
                 unbr.score++;
                 godindicator();
                 if (doomtimer === true){
-                    clearInterval(interval);
-                    unbr.counter = 5;
-                    counter();
+                    doomreset();
                 }
                 drawcard();
             }
@@ -1057,13 +1055,11 @@ $(document).on('click', '#rules', function() {
 //discards card if player opts to do so
 
 $(document).on('click', '#discardplay', function() {
-	discardcard();
+    discardcard();
     if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+        doomreset();
     }
-	$("#infocard").empty();
+    $("#infocard").empty();
     if (unbr.playingtutorial === true){
         tutorialimmediate();
     }
@@ -1075,9 +1071,7 @@ $(document).on('click', '#discardplay', function() {
 $(document).on('click', '#sequenceplay', function() {
     $("#infocard").empty();
     if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+        doomreset();
     }
     sequenceadd();
 });
@@ -1089,9 +1083,7 @@ $(document).on('click', '#drophand', function() {
    discardhand();
    unbr.ghostpresent = false;
    if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+       doomreset();
     }
     $("#infocard").empty();
 });
@@ -1122,9 +1114,7 @@ $(document).on('click', '#dropunseen', function() {
     $("#hand div:last").remove()
     unbr.ghostpresent = false;
     if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+        doomreset();
     }
     $("#infocard").empty();
     dropunseen();
@@ -1141,9 +1131,7 @@ $(document).on('click', '#godshuffle', function() {
     unbr.godpresent = false;
     unbr.spiritcolour = false;
     if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+        doomreset();
     }
     $("#infocard").empty();
     $("#infocard").append("<p>The God whisks you off to a new place in the forest.</p>");
@@ -1175,7 +1163,7 @@ $(document).on('click', '#spiritplay', function() {
     unbr.sniping = true;
     if (doomtimer === true){
         clearInterval(interval);
-        unbr.counter = 5;
+        unbr.counter = doom;
     }
     spiritpower();
     
@@ -1206,9 +1194,7 @@ $(document).on('click', '#okdone', function() {
     unbr.swapselect2 = 0;
     unbr.click1 = 0;
     if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+        doomreset();
     }
     drawcard();
     if (unbr.playingtutorial === true){
@@ -1434,17 +1420,19 @@ function tutorial(){
 
 //defines event trigger in various scenarios
 
-$(document).on('click', '#easy', function() {
+function defaultstart(){
     $("#infobox").empty();
     $("#topmenu").fadeIn(300);
     $("#lamp2").fadeIn(800);
     $("#lamp1").fadeIn(300);
+}
+
+$(document).on('click', '#easy', function() {
+    defaultstart()
     easy();
     unbr.playingeasy = true;
     if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+        doomreset();
     }
     shuffle(unbr.drawdeck);
     unbr.lamptotal = unbr.drawdeck.length - 5;
@@ -1454,16 +1442,11 @@ $(document).on('click', '#easy', function() {
 });
 
 $(document).on('click', '#normal', function() {
-    $("#infobox").empty();
-    $("#topmenu").fadeIn(300);
-    $("#lamp2").fadeIn(800);
-    $("#lamp1").fadeIn(300);
+    defaultstart()
     normal();
     unbr.playingnormal = true;
     if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+        doomreset();
     }
     shuffle(unbr.drawdeck);
     unbr.lamptotal = unbr.drawdeck.length - 5;
@@ -1473,16 +1456,11 @@ $(document).on('click', '#normal', function() {
 });
 
 $(document).on('click', '#hard', function() {
-    $("#infobox").empty();
-    $("#topmenu").fadeIn(300);
-    $("#lamp2").fadeIn(800);
-    $("#lamp1").fadeIn(300);
+    defaultstart()
     hard();
     unbr.playinghard = true;
     if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+        doomreset();
     }
     shuffle(unbr.drawdeck);
     unbr.lamptotal = unbr.drawdeck.length - 5;
@@ -1492,16 +1470,11 @@ $(document).on('click', '#hard', function() {
 });
 
 $(document).on('click', '#master', function() {
-    $("#infobox").empty();
-    $("#topmenu").fadeIn(300);
-    $("#lamp2").fadeIn(800);
-    $("#lamp1").fadeIn(300);
+    defaultstart()
     master();
     unbr.playingmaster = true;
     if (doomtimer === true){
-        clearInterval(interval);
-        unbr.counter = 5;
-        counter();
+        doomreset();
     }
     shuffle(unbr.drawdeck);
     unbr.lamptotal = unbr.drawdeck.length - 5;
@@ -1611,7 +1584,7 @@ $(document).on('click', '#doomoff', function() {
 });
 
 function doomcount(){
-    if (unbr.counter === 5 && unbr.godpresent === false && unbr.ghostpresent === false && unbr.gameover === false){
+    if (unbr.counter === doom && unbr.godpresent === false && unbr.ghostpresent === false && unbr.gameover === false){
         interval = setInterval(function() {
             if (unbr.godpresent === false && unbr.ghostpresent === false && unbr.gameover === false){
                 ghostcheck();
@@ -1630,7 +1603,7 @@ function doomcount(){
                     }
                     drawcard();
                     clearInterval(interval);
-                    unbr.counter = 5;
+                    unbr.counter = doom;
                     doomcount();
                 }
             }
