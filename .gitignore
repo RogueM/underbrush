@@ -42,4 +42,6 @@ output
 cache
 env
 venv
+*.spec
 *.pyc
+
