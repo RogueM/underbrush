@@ -1224,11 +1224,12 @@ function initstart(){
 }
 
 function addCards(cardType,numOfCards){
-    if (cardlist === true){    
-        $("#distribution").append("<div id=distribution>" + cardType + numOfCards);
-    }
     for (var i = numOfCards; i >= 1; i--) {
         unbr.drawdeck.push(cardType);
+    }
+    if (cardlist === true){    
+        $("#distribution").append("<div class='cardthumb " + cardType[0] + " " + "'></div>");
+        $("#distribution").append("<div id=distribution>" + cardType[1] + " " + numOfCards);
     }
 }
 
@@ -1257,7 +1258,7 @@ function normal(){
     addCards(['purple', 'spirit'],3);
     addCards(['purple', 'god'],2);
 
-    addCards(['ghost', 'bad'],10);
+    addCards(['ghost', 'ghost'],10);
 }
 
 function easy(){    
@@ -1285,7 +1286,7 @@ function easy(){
     addCards(['purple', 'spirit'],4);
     addCards(['purple', 'god'],2);
 
-    addCards(['ghost', 'bad'],10);
+    addCards(['ghost', 'ghost'],10);
 }
 
 function hard(){    
@@ -1313,7 +1314,7 @@ function hard(){
     addCards(['purple', 'spirit'],2);
     addCards(['purple', 'god'],2);
 
-    addCards(['ghost', 'bad'],10);
+    addCards(['ghost', 'ghost'],10);
     addCards(['yellow', 'spirit'],4);
 }
 
@@ -1341,7 +1342,7 @@ function master(){
     addCards(['purple', 'spirit'],2);
     addCards(['purple', 'god'],2);
 
-    addCards(['ghost', 'bad'],10);
+    addCards(['ghost', 'ghost'],10);
     addCards(['yellow', 'spirit'],3);
     addCards(['dead', 'end'],6);
 }
@@ -1371,7 +1372,7 @@ function tutorial(){
     addCards(['blue', 'leaf'],1);
     addCards(['purple', 'twig'],1);
     addCards(['orange', 'twig'],1);
-    addCards(['ghost', 'bad'],4);
+    addCards(['ghost', 'ghost'],4);
     addCards(['purple', 'god'],1);
     addCards(['blue', 'god'],1);
     addCards(['orange', 'god'],1);
