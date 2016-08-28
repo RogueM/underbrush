@@ -43,14 +43,6 @@ html, body {
 	bottom: 0;
 }
 
-#distribution {
-	width: 100px;
-	height: 200px;
-	position: absolute;
-	margin: 0 auto;
-	bottom: 0;
-}
-
 #infocard {
 	width: 600px;
 	position: relative;
@@ -73,6 +65,18 @@ html, body {
 	position: relative;
 	float: right;
 	margin-right: 20px;
+}
+
+#distribution {
+	position: absolute;
+	top: 30;
+	left: 30;
+	opacity: 100%;
+	width: 100px;
+	height: 150px;
+	text-align: center;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 30pt;
 }
 
 #scorecard {

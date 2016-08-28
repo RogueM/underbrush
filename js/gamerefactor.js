@@ -1048,6 +1048,9 @@ function cardcount() {
     }
 }
 
+function cardlist() {
+    $("#distribution").replaceWith("<div id=distribution><p>" + unbr.drawdeck.length + " total</p></div>");
+}
 
 // displays rules
 
@@ -1228,6 +1231,7 @@ function addCards(cardType,numOfCards){
     for (var i = numOfCards; i >= 1; i--) {
         unbr.drawdeck.push(cardType);
     };
+//    cardlist();
 }
 
 function normal(){
@@ -1404,6 +1408,7 @@ $(document).on('click', '#easy', function() {
     defaultstart();
     shuffle(unbr.drawdeck);
     drawhandstart();
+    cardcount();
 });
 
 $(document).on('click', '#normal', function() {
@@ -1411,6 +1416,7 @@ $(document).on('click', '#normal', function() {
     defaultstart();
     shuffle(unbr.drawdeck);
     drawhandstart();
+    cardcount();
 });
 
 $(document).on('click', '#hard', function() {
@@ -1418,6 +1424,7 @@ $(document).on('click', '#hard', function() {
     defaultstart();
     shuffle(unbr.drawdeck);
     drawhandstart();
+    cardcount();
 });
 
 $(document).on('click', '#master', function() {
@@ -1425,6 +1432,7 @@ $(document).on('click', '#master', function() {
     defaultstart();
     shuffle(unbr.drawdeck);
     drawhandstart();
+    cardcount();
 });
 
 
@@ -1542,6 +1550,7 @@ $(document).on('click', '#tutorial', function() {
     tutorial();
     defaultstart();
     drawhandstart();
+    cardcount();
     $("#infocard").append("<p>Hi! Welcome to Underbrush. In this game, you are lost a forest of Gods, Spirits and Ghosts. You will need to find 8 Gods before the deck runs out to win. To do this, you need to play 3 cards of the same colour in a row. The trick being that you can never play the same symbol twice in a row. The cards above are your hand. Try clicking one of them.<p>");
     unbrtut.step1 = true;
 });
