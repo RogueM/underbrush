@@ -5,6 +5,7 @@ var hardwin = 0;
 var interval = 0;
 
 var caption = false;
+var cardlist = true;
 var doomtimer = false;
 var baileyplay = false;
 
@@ -89,31 +90,30 @@ function shuffle(array) {
 
 function drawhandstart() {
     if (unbr.drawdeck.length > (5 + (8 - unbr.score) + (10 - unbr.ghostcount))){
-    for (i = 0; i <= 4; i++) {
-        unbr.hand.unshift(unbr.drawdeck[0]);
-        unbr.drawdeck.shift();
-        if (caption === false){
-        $("#hand").append("<div class='card unrotate " + unbr.hand[0][0] + " " + unbr.hand[0][1] + "'></div>");
-        }
-        if (caption === true){
-        $("#hand").append("<div class='card unrotate " + unbr.hand[0][0] + " " + unbr.hand[0][1] + "'><p>"+ unbr.hand[0][0] +"</p></div>");
-        }
-        $("#hand div:last").fadeIn(400);
-        $("#hand div:last").removeClass("unrotate");
-        if (unbr.hand[0][1] === 'god' || unbr.hand[0][0] === 'ghost' && unbr.drawdeck.length > 0) {
-            unbr.limbo.unshift(unbr.hand[0]);
-            unbr.hand.shift();
-            $("#hand div:last").remove()
-            i--;
-        }
+        for (i = 0; i <= 4; i++) {
+            unbr.hand.unshift(unbr.drawdeck[0]);
+            unbr.drawdeck.shift();
+            if (caption === false){
+                $("#hand").append("<div class='card unrotate " + unbr.hand[0][0] + " " + unbr.hand[0][1] + "'></div>");
+            }
+            if (caption === true){
+                $("#hand").append("<div class='card unrotate " + unbr.hand[0][0] + " " + unbr.hand[0][1] + "'><p>"+ unbr.hand[0][0] +"</p></div>");
+            }
+            $("#hand div:last").fadeIn(400);
+            $("#hand div:last").removeClass("unrotate");
+            if (unbr.hand[0][1] === 'god' || unbr.hand[0][0] === 'ghost' && unbr.drawdeck.length > 0) {
+                unbr.limbo.unshift(unbr.hand[0]);
+                unbr.hand.shift();
+                $("#hand div:last").remove()
+                i--;
+            }
         }
         limboshuffle();
-        } else {
-            unbr.ghostpresent = false;
-            unbr.godpresent = false;
-            drawcard();
-        }
-    
+    } else {
+        unbr.ghostpresent = false;
+        unbr.godpresent = false;
+        drawcard();
+    }
 }
 
 
@@ -228,10 +228,10 @@ function drawcard() {
             if (unbr.ghostpresent === false && unbr.godpresent === false){
                 unbr.hand.unshift(unbr.drawdeck[0]);
                 if (caption === false){
-                $("#hand").append("<div class='card unrotate " + unbr.drawdeck[0][0] + " " + unbr.drawdeck[0][1] + "'></div>");
+                    $("#hand").append("<div class='card unrotate " + unbr.drawdeck[0][0] + " " + unbr.drawdeck[0][1] + "'></div>");
                 }
                 if (caption === true){
-                $("#hand").append("<div class='card unrotate " + unbr.drawdeck[0][0] + " " + unbr.drawdeck[0][1] + "'><p>"+ unbr.drawdeck[0][0] +"</p></div>");
+                    $("#hand").append("<div class='card unrotate " + unbr.drawdeck[0][0] + " " + unbr.drawdeck[0][1] + "'><p>"+ unbr.drawdeck[0][0] +"</p></div>");
                 }
                 $("#hand div:last").fadeIn(400);
                 $("#hand div:last").removeClass("unrotate");
@@ -1048,10 +1048,6 @@ function cardcount() {
     }
 }
 
-function cardlist() {
-    $("#distribution").replaceWith("<div id=distribution><p>" + unbr.drawdeck.length + " total</p></div>");
-}
-
 // displays rules
 
 $(document).on('click', '#rules', function() {
@@ -1228,10 +1224,12 @@ function initstart(){
 }
 
 function addCards(cardType,numOfCards){
+    if (cardlist === true){    
+        $("#distribution").append("<div id=distribution>" + cardType + numOfCards);
+    }
     for (var i = numOfCards; i >= 1; i--) {
         unbr.drawdeck.push(cardType);
-    };
-//    cardlist();
+    }
 }
 
 function normal(){
@@ -1440,8 +1438,9 @@ $(document).on('click', '#master', function() {
 
 function menuoptions(){
     $("#infocard").empty().hide();
-    $("#lamp2").hide();
     $("#lamp1").hide();
+    $("#lamp2").hide();
+    $("#distribution").empty();
     $("#sequence").empty();
     $("#hand").empty();
     $("#hand").hide();
@@ -1474,6 +1473,11 @@ function menuoptions(){
     } else {
         $("#infocard").append("<p id='captionon' class='option'>Turn On Colour Description</p>");
     }
+    if (cardlist === true){
+        $("#infocard").append("<p id='cardlistoff' class='option'>Turn Off Card Distribution</p>");
+    } else {
+        $("#infocard").append("<p id='cardliston' class='option'>Turn On Card Distribution</p>");
+    }
     $("#hand").fadeIn(800);
     $("#infocard").fadeIn(600);
 }
@@ -1494,6 +1498,16 @@ $(document).on('click', '#captionon', function() {
 $(document).on('click', '#captionoff', function() {
     caption = false;
     $("#captionoff").replaceWith("<p id='captionon' class='option'>Turn On Colour Description</p>");
+});
+
+$(document).on('click', '#cardliston', function() {
+    cardlist = true;
+    $("#cardliston").replaceWith("<p id='cardlistoff' class='option'>Turn Off Card Distribution</p>");
+});
+
+$(document).on('click', '#cardlistoff', function() {
+    cardlist = false;
+    $("#cardlistoff").replaceWith("<p id='cardliston' class='option'>Turn On Card Distribution</p>");
 });
 
 $(document).on('click', '#doomon', function() {
