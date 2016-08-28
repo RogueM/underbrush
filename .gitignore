@@ -37,6 +37,7 @@ Thumbs.db
 # Python related #
 ######################
 build
+dist
 output
 cache
 env
