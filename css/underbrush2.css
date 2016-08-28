@@ -368,10 +368,7 @@ html, body {
 	opacity: 100%;
 	width: 100px;
 	height: 150px;
-	background-image: URL("../img/doomtimer.png");
 	text-align: center;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 30pt;
 }
-
-

@@ -5,7 +5,7 @@ var hardwin = 0;
 var interval = 0;
 
 var caption = false;
-var doomtimer = false;
+var doomtimer = true;
 var baileyplay = false;
 
 var unbr = {};
