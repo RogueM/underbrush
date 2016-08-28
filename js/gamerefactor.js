@@ -1,7 +1,7 @@
 //initial variables
 
 var doom = 10
-var hardwin = 0;
+var hardwin = 1;
 var interval = 0;
 
 var caption = false;
@@ -334,12 +334,10 @@ function ghostcheck() {
 //function checks for spirit card in hand
 
 function spiritcheck() { 
-    var spirithere = 0;
-    var spiritlocal = [];
+    spirithere = 0;
     for (i = 0, j = unbr.hand.length - 1; i <= j; i++) {
         if (unbr.hand[i][1] === 'spirit') {
             spirithere++;
-            spiritlocal.push(i);
         }
     }
 }
@@ -352,8 +350,14 @@ function godcheck() {
         if (unbr.hand[g][1] == 'god'){
             unbr.godpresent = true;
             var scored = false;
+            var spiritlocal = [];
             spiritcheck();
             if (spirithere > 0) {
+                for (i = 0, j = unbr.hand.length - 1; i <= j; i++) {
+                    if (unbr.hand[i][1] === 'spirit') {
+                        spiritlocal.push(i);
+                    }
+                }
                 unbr.godcolour = unbr.hand[0][0];
                 for (s = 0, h = spiritlocal.length - 1; s <= h; s++) {
                     if (unbr.hand[spiritlocal[s]][0] === unbr.godcolour && unbr.scored !== true) {
@@ -489,7 +493,7 @@ $(document).on('dblclick', '.card', function() {
                     standardoption();
                 } else {
                     if (doomtimer === true){
-                        doomreset()
+                        doomreset();
                     }
                     autoplay();
                 }
@@ -1425,62 +1429,38 @@ function defaultstart(){
     $("#topmenu").fadeIn(300);
     $("#lamp2").fadeIn(800);
     $("#lamp1").fadeIn(300);
+    if (doomtimer === true){
+        doomreset();
+    }
+    shuffle(unbr.drawdeck);
+    unbr.lamptotal = unbr.drawdeck.length - 5;
+    unbr.lamppercent = 1;
+    lampfade();
+    drawhandstart();
 }
 
 $(document).on('click', '#easy', function() {
-    defaultstart()
-    easy();
     unbr.playingeasy = true;
-    if (doomtimer === true){
-        doomreset();
-    }
-    shuffle(unbr.drawdeck);
-    unbr.lamptotal = unbr.drawdeck.length - 5;
-    unbr.lamppercent = 1;
-    lampfade();
-    drawhandstart();
+    easy();
+    defaultstart();
 });
 
 $(document).on('click', '#normal', function() {
-    defaultstart()
-    normal();
     unbr.playingnormal = true;
-    if (doomtimer === true){
-        doomreset();
-    }
-    shuffle(unbr.drawdeck);
-    unbr.lamptotal = unbr.drawdeck.length - 5;
-    unbr.lamppercent = 1;
-    lampfade();
-    drawhandstart();
+    normal();
+    defaultstart();
 });
 
 $(document).on('click', '#hard', function() {
-    defaultstart()
-    hard();
     unbr.playinghard = true;
-    if (doomtimer === true){
-        doomreset();
-    }
-    shuffle(unbr.drawdeck);
-    unbr.lamptotal = unbr.drawdeck.length - 5;
-    unbr.lamppercent = 1;
-    lampfade();
-    drawhandstart();
+    hard();
+    defaultstart();
 });
 
 $(document).on('click', '#master', function() {
-    defaultstart()
-    master();
     unbr.playingmaster = true;
-    if (doomtimer === true){
-        doomreset();
-    }
-    shuffle(unbr.drawdeck);
-    unbr.lamptotal = unbr.drawdeck.length - 5;
-    unbr.lamppercent = 1;
-    lampfade();
-    drawhandstart();
+    master();
+    defaultstart();
 });
 
 $(document).on('click', '#menubutton', function() {
