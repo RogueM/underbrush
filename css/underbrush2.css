@@ -363,13 +363,12 @@ html, body {
 
 #doomcount{
 	position: absolute;
-	top: 10;
-	left: 30;
+	top: 150;
+	right: 30;
 	opacity: 100%;
 	width: 100px;
 	height: 150px;
 	background-image: URL("../img/doomtimer.png");
-	z-index: 1;
 	text-align: center;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 30pt;
