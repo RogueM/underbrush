@@ -305,8 +305,8 @@ html, body {
 	background-color: DarkSlateGray;
 }
 
-.end {
-	background-image: URL("../img/end.png");
+.trap {
+	background-image: URL("../img/trap.png");
 }
 
 .option {

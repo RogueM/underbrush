@@ -1,7 +1,7 @@
 // initial variables
 
 var doom = 10
-var hardwin = 0;
+var hardwin = 1;
 var interval = 0;
 
 var caption = false;
@@ -33,7 +33,6 @@ unbr.init = function(){
     unbr.gameover = false;
     unbr.ghostpresent = false;
     unbr.godpresent = false;
-    unbr.hardplay = false;
     unbr.playingeasy = false;
     unbr.playinghard = false;
     unbr.playingmaster = false;
@@ -943,8 +942,8 @@ function autoplay(){
     $('#selectedcard').attr('id','');
     $(unbr.selectedcard).attr('id', 'selectedcard');
     unbr.selectedcard = 0;
-    if (unbr.hand[unbr.selected[0]][1] === 'end'){
-        $("#infocard").append("<p>A dead end!<br><br></p>");
+    if (unbr.hand[unbr.selected[0]][1] === 'trap'){
+        $("#infocard").append("<p>It's a trap!<br><br></p>");
         if (unbr.drawdeck.length >= 4){
             $("#infocard").append("<p id='deadend' class='option'>Discard hand</p>");
         }
@@ -961,8 +960,8 @@ function standardoption(){
     $('#selectedcard').attr('id','');
     $(unbr.selectedcard).attr('id', 'selectedcard');
     unbr.selectedcard = 0;
-    if (unbr.hand[unbr.selected[0]][1] === 'end'){
-        $("#infocard").append("<p>A dead end!<br><br></p>");
+    if (unbr.hand[unbr.selected[0]][1] === 'trap'){
+        $("#infocard").append("<p>It's a trap!<br><br></p>");
         if (unbr.drawdeck.length >= 4){
             $("#infocard").append("<p id='deadend' class='option'>Discard hand</p>");
             }
@@ -1218,6 +1217,7 @@ function initstart(){
     $("#hand").empty();
     $("#sequence").empty();
     $("#cardsremaining").empty();
+    $("#distribution").empty();
     $("#scorecard").empty();
     $("#infocard").empty();
     unbr.init();    
@@ -1235,7 +1235,6 @@ function addCards(cardType,numOfCards){
 
 function normal(){
     initstart();
-    unbr.hardplay = false;
     unbr.playingnormal = true;
 
     addCards(['orange', 'leaf'],6);
@@ -1263,25 +1262,24 @@ function normal(){
 
 function easy(){    
     initstart();
-    unbr.hardplay = false;
     unbr.playingeasy = true;
 
-    addCards(['orange', 'leaf'],6);
+    addCards(['orange', 'leaf'],5);
     addCards(['orange', 'twig'],4);
     addCards(['orange', 'spirit'],4);
     addCards(['orange', 'god'],2);
 
-    addCards(['green', 'leaf'],7);
+    addCards(['green', 'leaf'],6);
     addCards(['green', 'twig'],4);
     addCards(['green', 'spirit'],4);
     addCards(['green', 'god'],2);
 
-    addCards(['blue', 'leaf'],8);
+    addCards(['blue', 'leaf'],7);
     addCards(['blue', 'twig'],4);
     addCards(['blue', 'spirit'],4);
     addCards(['blue', 'god'],2);
 
-    addCards(['purple', 'leaf'],9);
+    addCards(['purple', 'leaf'],8);
     addCards(['purple', 'twig'],4);
     addCards(['purple', 'spirit'],4);
     addCards(['purple', 'god'],2);
@@ -1291,7 +1289,6 @@ function easy(){
 
 function hard(){    
     initstart();
-    unbr.hardplay = true;
     unbr.playinghard = true;
 
     addCards(['orange', 'leaf'],6);
@@ -1314,8 +1311,8 @@ function hard(){
     addCards(['purple', 'spirit'],2);
     addCards(['purple', 'god'],2);
 
-    addCards(['ghost', 'ghost'],10);
     addCards(['yellow', 'spirit'],4);
+    addCards(['ghost', 'ghost'],10);
 }
 
 function master(){    
@@ -1342,14 +1339,13 @@ function master(){
     addCards(['purple', 'spirit'],2);
     addCards(['purple', 'god'],2);
 
-    addCards(['ghost', 'ghost'],10);
     addCards(['yellow', 'spirit'],3);
-    addCards(['dead', 'end'],6);
+    addCards(['ghost', 'ghost'],10);
+    addCards(['dead', 'trap'],5);
 }
 
 function tutorial(){    
     initstart();
-    unbr.hardplay = false;
     unbr.playingtutorial = true;
 
     addCards(['green', 'leaf'],6);
